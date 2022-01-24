@@ -1,169 +1,164 @@
-import {
-  useShopQuery,
-  flattenConnection,
-  ProductProviderFragment,
-  Image,
-  Link,
-} from '@shopify/hydrogen';
+import {useShopQuery, ProductProviderFragment} from '@shopify/hydrogen';
 import gql from 'graphql-tag';
 
-import Layout from '../components/Layout.server';
-import FeaturedCollection from '../components/FeaturedCollection';
-import ProductCard from '../components/ProductCard';
-import Welcome from '../components/Welcome.server';
+import NotFound from '../components-pawzzles/NotFound.server';
+import Layout from '../components-pawzzles/Layout.server';
 
-function GradientBackground() {
-  return (
-    <div className="fixed top-0 w-full h-3/5 overflow-hidden">
-      <div className="absolute w-full h-full bg-gradient-to-t from-gray-50 z-10" />
-
-      <svg
-        viewBox="0 0 960 743"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        className="filter blur-[30px]"
-        aria-hidden="true"
-      >
-        <defs>
-          <path fill="#fff" d="M0 0h960v540H0z" id="reuse-0" />
-        </defs>
-        <g clipPath="url(#a)">
-          <use xlinkHref="#reuse-0" />
-          <path d="M960 0H0v743h960V0Z" fill="#7CFBEE" />
-          <path
-            d="M831 380c200.48 0 363-162.521 363-363s-162.52-363-363-363c-200.479 0-363 162.521-363 363s162.521 363 363 363Z"
-            fill="#4F98D0"
-          />
-          <path
-            d="M579 759c200.479 0 363-162.521 363-363S779.479 33 579 33 216 195.521 216 396s162.521 363 363 363Z"
-            fill="#7CFBEE"
-          />
-          <path
-            d="M178 691c200.479 0 363-162.521 363-363S378.479-35 178-35c-200.4794 0-363 162.521-363 363s162.5206 363 363 363Z"
-            fill="#4F98D0"
-          />
-          <path
-            d="M490 414c200.479 0 363-162.521 363-363S690.479-312 490-312 127-149.479 127 51s162.521 363 363 363Z"
-            fill="#4F98D0"
-          />
-          <path
-            d="M354 569c200.479 0 363-162.521 363-363 0-200.47937-162.521-363-363-363S-9 5.52063-9 206c0 200.479 162.521 363 363 363Z"
-            fill="#7CFBEE"
-          />
-          <path
-            d="M630 532c200.479 0 363-162.521 363-363 0-200.4794-162.521-363-363-363S267-31.4794 267 169c0 200.479 162.521 363 363 363Z"
-            fill="#4F98D0"
-          />
-        </g>
-        <path fill="#fff" d="M0 540h960v203H0z" />
-        <defs>
-          <clipPath id="a">
-            <use xlinkHref="#reuse-0" />
-          </clipPath>
-        </defs>
-      </svg>
-    </div>
-  );
-}
+import {Illustration} from '../components-pawzzles/Illustration';
+import {Banner} from '../components-pawzzles/Banner';
+import {Testimonial} from '../components-pawzzles/Testimonial';
+import {Hero} from '../components-pawzzles/Hero.server';
 
 export default function Index({country = {isoCode: 'US'}}) {
+  const handle = 'pawzzle';
+
   const {data} = useShopQuery({
     query: QUERY,
     variables: {
       country: country.isoCode,
+      handle,
     },
   });
 
-  const collections = data ? flattenConnection(data.collections) : [];
-  const featuredProductsCollection = collections[0];
-  const featuredProducts = featuredProductsCollection
-    ? flattenConnection(featuredProductsCollection.products)
-    : null;
-  const featuredCollection =
-    collections && collections.length > 1 ? collections[1] : collections[0];
+  if (!data.product) {
+    return <NotFound />;
+  }
 
   return (
-    <Layout hero={<GradientBackground />}>
-      <div className="relative mb-12">
-        <Welcome />
-        <div className="bg-white p-12 shadow-xl rounded-xl mb-10">
-          {featuredProductsCollection ? (
-            <>
-              <div className="flex justify-between items-center mb-8 text-md font-medium">
-                <span className="text-black uppercase">
-                  {featuredProductsCollection.title}
-                </span>
-                <span className="hidden md:inline-flex">
-                  <Link
-                    to={`/collections/${featuredProductsCollection.handle}`}
-                    className="text-blue-600 hover:underline"
-                  >
-                    Shop all
-                  </Link>
-                </span>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-                {featuredProducts.map((product) => (
-                  <div key={product.id}>
-                    <ProductCard product={product} />
-                  </div>
-                ))}
-              </div>
-              <div className="md:hidden text-center">
-                <Link
-                  to={`/collections/${featuredCollection.handle}`}
-                  className="text-blue-600"
-                >
-                  Shop all
-                </Link>
-              </div>
-            </>
-          ) : null}
-        </div>
-        <FeaturedCollection collection={featuredCollection} />
-      </div>
+    <Layout>
+      <Hero product={data.product} />
+      <Illustration
+        width={225}
+        src="https://cdn.shopify.com/s/files/1/0457/6857/2950/files/cat-bottom-blue-static_2x_ba2995f0-27e3-4cd5-93d2-e95d9a651100_750x.png"
+      />
+      <Testimonial
+        author="Dr. Sarah Ellis, The Trainable Cat"
+        content="Obtaining food rewards through puzzle feeders involves considerable effort on the cat’s part, but evolution has designed cats for this—even greater effort is needed when hunting in the wild—so the process of working for food is intrinsically rewarding."
+      />
+      <Illustration
+        width={175}
+        src="//cdn.shopify.com/s/files/1/0457/6857/2950/files/cat-top-blue-static_2x_a74ea06d-edc8-4039-9c43-865ff34df537_750x.png"
+      />
+      <Banner
+        title="Pawrigin story"
+        media={
+          <video className="Video" loop="" muted="" autoPlay="">
+            <source
+              src="https://cdn.shopify.com/s/files/1/0457/6857/2950/files/Pawzzles-FlatPack-Stopmotion-3-loop-2.mp4"
+              type="video/mp4"
+            />
+          </video>
+        }
+      >
+        <h2>From scraps to head scratchers</h2>
+        <p>
+          Years ago, we made a pawzzle for our cat, Minou, but it wasn’t until
+          we had a growing pile of wood offcuts from our other business,{' '}
+          <a href="https://fondfolio.com/">Fondfolio</a>, that we considered
+          making these for other felines.
+        </p>
+        <p>
+          A Pawzzle shouldn’t replace regular interactive playtime, but it can
+          help focus some of your cat’s energy when you can’t give them
+          attention, like during a meeting. It’s a frustration-reduction box!
+        </p>
+      </Banner>
+      <Banner
+        align="left"
+        title="How it works"
+        media={
+          <img
+            className="Image"
+            src="//cdn.shopify.com/s/files/1/0457/6857/2950/files/IMG_4561-crop_700x700.jpg?v=1616333208"
+            alt="Our cat minou hunting for treats in his wooden Pawzzle"
+          />
+        }
+      >
+        <h2>Learning to Pawzzle happens in three stages:</h2>
+        <ol>
+          <li>
+            Identifying that there is food in the box, usually by smell or by
+            seeing you add it.
+          </li>
+          <li>Having the desire to get the food.</li>
+          <li>Trying different ways to get it.</li>
+        </ol>
+        <p>
+          As your cat successfully acquires the treats, they will learn to
+          repeat their actions in order to get more. For this reason, Pawzzles
+          are also a great introduction to reward-based training!
+        </p>
+        <p>
+          For less food-motivated cats, try introducing the Pawzzle right before
+          meal time.
+        </p>
+
+        <p>
+          <a className="" href="https://pawzzles.cat/pages/faqs">
+            More tips for successful Pawzzling
+          </a>
+        </p>
+      </Banner>
+      <Banner
+        title="Giving back"
+        media={
+          <img
+            className="Image"
+            src="//cdn.shopify.com/s/files/1/0457/6857/2950/files/IMG_4632-crop_700x700.jpg?v=1616333100"
+            alt=""
+          />
+        }
+      >
+        <h2>Paws for a purrrpose</h2>
+        <p>
+          10% of each Pawzzle sale is donated to animal welfare initiatives. Our
+          plan is to give to a combination of local cat-based charities, such as
+          the <a href="https://www.torontocatrescue.ca/">Toronto Cat Rescue</a>{' '}
+          (where we adopted Minou), and the{' '}
+          <a href="https://funds.effectivealtruism.org/funds/animal-welfare">
+            Effective Altruism Animal Welfare Fund
+          </a>{' '}
+          which supports emerging animal welfare groups and advocacy research in
+          a range of countries.
+        </p>
+        <p>
+          <a href="https://pawzzles.cat/pages/giving">More about our giving</a>
+        </p>
+      </Banner>
     </Layout>
   );
 }
 
 const QUERY = gql`
-  query indexContent(
+  query product(
     $country: CountryCode
-    $numCollections: Int = 2
-    $numProducts: Int = 3
-    $includeReferenceMetafieldDetails: Boolean = false
-    $numProductMetafields: Int = 0
+    $handle: String!
+    $includeReferenceMetafieldDetails: Boolean = true
+    $numProductMetafields: Int = 20
     $numProductVariants: Int = 250
-    $numProductMedia: Int = 1
+    $numProductMedia: Int = 6
     $numProductVariantMetafields: Int = 10
     $numProductVariantSellingPlanAllocations: Int = 0
     $numProductSellingPlanGroups: Int = 0
     $numProductSellingPlans: Int = 0
   ) @inContext(country: $country) {
-    collections(first: $numCollections) {
-      edges {
-        node {
-          descriptionHtml
-          description
-          handle
-          id
-          title
-          image {
-            ...ImageFragment
-          }
-          products(first: $numProducts) {
-            edges {
-              node {
-                ...ProductProviderFragment
-              }
-            }
+    product: product(handle: $handle) {
+      id
+      vendor
+      seo {
+        title
+        description
+      }
+      images(first: 1) {
+        edges {
+          node {
+            url
           }
         }
       }
+      ...ProductProviderFragment
     }
   }
 
   ${ProductProviderFragment}
-  ${Image.Fragment}
 `;

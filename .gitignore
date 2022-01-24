@@ -1,6 +1,9 @@
 # THIS IS A STUB FOR NEW HYDROGEN APPS
 # THIS WILL EVENTUALLY MOVE TO A /TEMPLATE-* FOLDER
 
+.DS_STORE
+/examples/
+
 # Logs
 logs
 *.log
@@ -78,3 +81,4 @@ jspm_packages/
 
 # Vite output
 dist
+

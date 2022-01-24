@@ -2,9 +2,9 @@ import {useShopQuery, ProductProviderFragment} from '@shopify/hydrogen';
 import {useParams} from 'react-router-dom';
 import gql from 'graphql-tag';
 
-import ProductDetails from '../../components/ProductDetails.client';
-import NotFound from '../../components/NotFound.server';
-import Layout from '../../components/Layout.server';
+import ProductDetails from '../../components-pawzzles/ProductDetails.client';
+import NotFound from '../../components-pawzzles/NotFound.server';
+import Layout from '../../components-pawzzles/Layout.server';
 
 export default function Product({country = {isoCode: 'US'}}) {
   const {handle} = useParams();
