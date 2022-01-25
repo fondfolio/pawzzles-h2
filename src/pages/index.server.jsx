@@ -1,13 +1,13 @@
 import {useShopQuery, ProductProviderFragment} from '@shopify/hydrogen';
 import gql from 'graphql-tag';
 
-import NotFound from '../components-pawzzles/NotFound.server';
-import Layout from '../components-pawzzles/Layout.server';
+import NotFound from '../components/NotFound.server';
+import Layout from '../components/Layout.server';
 
-import {Illustration} from '../components-pawzzles/Illustration';
-import {Banner} from '../components-pawzzles/Banner';
-import {Testimonial} from '../components-pawzzles/Testimonial';
-import {Hero} from '../components-pawzzles/Hero.server';
+import {Illustration} from '../components/Illustration';
+import {Banner} from '../components/Banner';
+import {Testimonial} from '../components/Testimonial';
+import {Hero} from '../components/Hero.server';
 
 export default function Index({country = {isoCode: 'US'}}) {
   const handle = 'pawzzle';
