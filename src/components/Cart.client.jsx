@@ -27,9 +27,9 @@ export function Cart() {
 }
 
 function CartFooter() {
-  const {checkoutUrl, estimatedCost} = useCart();
+  const {checkoutUrl, estimatedCost, lines} = useCart();
 
-  if (!estimatedCost) {
+  if (lines.length === 0) {
     return null;
   }
 
@@ -64,6 +64,13 @@ function CartFooter() {
 function CartContents() {
   const {lines} = useCart();
 
+  if (lines.length === 0) {
+    return (
+      <div className="Cart">
+        <div className="Cart__Empty">Empty</div>
+      </div>
+    );
+  }
   return (
     <div className="Cart">
       {lines.map((line) => (

@@ -65,7 +65,7 @@ export default function ProductDetails({product}) {
               />
             </div>
             <div className="Dimensions__Content small">
-              <span claclassNamess="Dash" />
+              <span className="Dash" />
               <p>
                 The Pawzzle is 7.75” (20 cm) square (a) and 2.5” (6.4 cm) in
                 height (b). The holes are 1.75” (4.5 cm) in diameter (c). Plenty

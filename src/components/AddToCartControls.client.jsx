@@ -1,17 +1,24 @@
 import React, {useState} from 'react';
 import {useCart} from '@shopify/hydrogen/client';
+import {
+  useCartLinesAddCallback,
+  useCartCreateCallback,
+  useProduct,
+} from '@shopify/hydrogen/client';
 import {translations} from '../lib/translation';
 import {useCartUI} from './CartUIProvider.client';
 
 import {Button} from './Button';
 import {QuantityControls} from './QuantityControls';
 
-export function AddToCartControls(props) {
-  const {addLines, createCart, id} = useCart();
+export function AddToCartControls() {
+  const {id} = useCart();
+  const {selectedVariant} = useProduct();
+  const linesAdd = useCartLinesAddCallback();
+  const createCart = useCartCreateCallback();
+
   const {toggleCart} = useCartUI();
   const [quantity, setQuantity] = useState(1);
-
-  const merchandiseId = props.variants.edges[0].node.id;
 
   return (
     <div className="AddToCartControls ">
@@ -21,6 +28,9 @@ export function AddToCartControls(props) {
           setQuantity(quantity + 1);
         }}
         onSubtract={() => {
+          if (quantity <= 1) {
+            return;
+          }
           setQuantity(quantity - 1);
         }}
       />
@@ -31,9 +41,11 @@ export function AddToCartControls(props) {
           toggleCart();
 
           if (id) {
-            addLines([{merchandiseId, quantity}]);
+            linesAdd([{merchandiseId: selectedVariant.id, quantity}]);
           } else {
-            createCart({lines: [{merchandiseId, quantity}]});
+            createCart({
+              lines: [{merchandiseId: selectedVariant.id, quantity}],
+            });
           }
         }}
       >

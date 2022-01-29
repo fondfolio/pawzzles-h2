@@ -5,10 +5,6 @@ export const UrlContext = React.createContext({});
 export const useUrl = () => useContext(UrlContext);
 
 class Url {
-  constructor() {
-    console.log('Url constructor');
-  }
-
   home() {
     return '/';
   }
@@ -18,7 +14,7 @@ class Url {
   }
 
   page(slug) {
-    return `/page/${slug}`;
+    return `/pages/${slug}`;
   }
 }
 

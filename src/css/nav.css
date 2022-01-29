@@ -5,6 +5,7 @@
   justify-content: flex-end;
   padding-left: 24px;
   padding-top: 4px;
+  min-height: 48px;
 }
 
 @media screen and (min-width: 750px) {

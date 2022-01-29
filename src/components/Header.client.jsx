@@ -1,17 +1,25 @@
 import React from 'react';
 
-import {Nav} from './Navigation.client';
+import {Navigation} from './Navigation.client';
 import {Logo} from './Logo.client';
 import {Cart} from './Cart.client';
 
-function Header() {
+function Header({loading}) {
+  const content = loading ? (
+    <>
+      <Logo />
+      <Navigation loading />
+    </>
+  ) : (
+    <>
+      <Logo />
+      <Navigation />
+      <Cart />
+    </>
+  );
   return (
     <section className="Section--Header">
-      <header className="Header">
-        <Logo />
-        <Nav />
-        <Cart />
-      </header>
+      <header className="Header">{content}</header>
     </section>
   );
 }
